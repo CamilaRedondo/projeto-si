@@ -2,11 +2,17 @@ import React, { useState } from "react";
 import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, Link, OutlinedInput, TextField } from "@mui/material";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { useNavigate } from "react-router-dom";
+import useSession from "../session/useSession.hook";
+import { User } from "../types/definitions";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+
+    const navigate = useNavigate();
+    const { login } = useSession();
 
     const handleEmailChange = (e: { target: { value: React.SetStateAction<string>; }; }) => setEmail(e.target.value);
     const handlePasswordChange = (e: { target: { value: React.SetStateAction<string>; }; }) => setPassword(e.target.value); 
@@ -15,10 +21,23 @@ export default function LoginPage() {
         event.preventDefault();
     };
 
-    const handleLogin = () => {
-        // Lógica para realizar o login
-        console.log("Email:", email);
-        console.log("Senha:", password);
+    const handleLogin = async () => {
+        const result = await fetch('http://localhost:5000/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        if (result.status === 200) {
+            const response: User = await result.json();
+
+            login(response)
+            navigate('/profile')
+        } else {
+            alert('Credenciais incorretas!')
+        }
     };
 
     return (

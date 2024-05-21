@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from "@mui/material";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import useSession from "../session/useSession.hook";
 
 interface UserData {
     name: string;
@@ -11,13 +12,15 @@ interface UserData {
 }
 
 const initialUserData: UserData = {
-    name: 'João Silva',
-    email: 'joao@example.com',
-    password: 'senha123',
+    name: '',
+    email: '',
+    password: '',
     confirmPassword: ''
 };
 
 const ProfilePage: React.FC = () => {
+    const { session } = useSession();
+
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
     const [termsChecked, setTermsChecked] = useState<boolean>(true); // Checkbox marcado por padrão
@@ -31,6 +34,7 @@ const ProfilePage: React.FC = () => {
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
+
 
     const handleSaveForm = () => {
         // Verifica se a senha de confirmação corresponde à senha principal
@@ -84,7 +88,7 @@ const ProfilePage: React.FC = () => {
                 label="Nome"
                 variant="outlined"
                 name="name"
-                value={userData.name}
+                defaultValue={session.user?.name}
                 onChange={handleInputChange}
             />
             <TextField
@@ -92,7 +96,7 @@ const ProfilePage: React.FC = () => {
                 label="Email"
                 variant="outlined"
                 name="email"
-                value={userData.email}
+                defaultValue={session.user?.email}
                 onChange={handleInputChange}
             />
             <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
@@ -100,7 +104,7 @@ const ProfilePage: React.FC = () => {
                 <OutlinedInput
                     id="outlined-adornment-password"
                     type={showPassword ? 'text' : 'password'}
-                    value={userData.password}
+                    defaultValue={session.user?.password}
                     onChange={handleInputChange}
                     endAdornment={
                         <InputAdornment position="end">
@@ -123,7 +127,7 @@ const ProfilePage: React.FC = () => {
                 <OutlinedInput
                     id="outlined-adornment-confirm-password"
                     type={showConfirmPassword ? 'text' : 'password'}
-                    value={userData.confirmPassword}
+                    defaultValue={session}
                     onChange={handleInputChange}
                     error={passwordError}
                     endAdornment={
