@@ -1,13 +1,34 @@
 import { Request, Response } from "express";
 import { User } from "../../database/models/User.model";
+import { DefaultResponse, FailedResponse } from "../../types/definitions";
+import { Address } from "../../database/models/Address.model";
 
 export default async function updateUser(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
-    const { name, email }: Partial<User> = req.body;
+    const { name, document }: Partial<User> = req.body;
 
-    if (!req.body || !id) return res.status(404).json()
+    if (!req.body || !id) return res.status(404).json({
+        ok: false,
+        status: "404",
+        message: "Usuário não encontrado"
+    } satisfies FailedResponse)
     
-    User.update({ name, email }, { where: { id } })
+    await User.update({ name, document }, { where: { id } })
 
-    return res.status(204).json()
+    const user = await User.findOne({ where: { id }, include: [ Address ] })
+
+    if (!user) {
+        return res.status(200).json({
+            ok: true,
+            status: "200",
+            message: "Usuário atualizado com sucesso.",
+        } satisfies DefaultResponse)
+    }
+
+    return res.status(200).json({
+        ok: true,
+        status: "200",
+        message: "Usuário atualizado com sucesso.",
+        data: user
+    } satisfies DefaultResponse<User>)
 }

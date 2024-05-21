@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize-typescript";
 import { User } from "../models/User.model";
+import { Address } from "../models/Address.model";
 
 const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -7,7 +8,7 @@ const sequelize = new Sequelize({
     database: 'db',
     username: 'root',
     password: '',
-    models: [ User ],
+    models: [ User, Address ],
 });
 
 export default sequelize;
