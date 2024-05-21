@@ -1,21 +1,31 @@
 import React, { useState } from "react";
-import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from "@mui/material";
+import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Grid, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from "@mui/material";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import useSession from "../session/useSession.hook";
 
 interface UserData {
     name: string;
-    email: string;
+    cpf: string;
     password: string;
     confirmPassword: string;
+    neighborhood: string;
+    street: string;
+    number: string;
+    complement: string;
+    phone: string;
 }
 
 const initialUserData: UserData = {
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+    name: 'João Silva',
+    cpf: '123.456.789-00',
+    password: 'senha123',
+    confirmPassword: '',
+    neighborhood: 'Centro',
+    street: 'Rua Exemplo',
+    number: '123',
+    complement: '',
+    phone: '99999-9999'
 };
 
 const ProfilePage: React.FC = () => {
@@ -44,8 +54,13 @@ const ProfilePage: React.FC = () => {
             setPasswordError(false);
             // Lógica para salvar as informações do usuário
             console.log("Nome:", userData.name);
-            console.log("Email:", userData.email);
+            console.log("CPF:", userData.cpf);
             console.log("Senha:", userData.password);
+            console.log("Bairro:", userData.neighborhood);
+            console.log("Rua:", userData.street);
+            console.log("Número:", userData.number);
+            console.log("Complemento:", userData.complement);
+            console.log("Telefone:", userData.phone);
             console.log("Dados do usuário salvos:", userData);
         }
     };
@@ -81,73 +96,125 @@ const ProfilePage: React.FC = () => {
     };
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '100px' }}>
-            <p style={{ fontSize: '18px', fontWeight: "normal", color: '#1565c0' }}>EDITAR PERFIL</p>
-            <TextField
-                sx={{ m: 1, width: '25ch' }}
-                label="Nome"
-                variant="outlined"
-                name="name"
-                defaultValue={session.user?.name}
-                onChange={handleInputChange}
-            />
-            <TextField
-                sx={{ m: 1, width: '25ch' }}
-                label="Email"
-                variant="outlined"
-                name="email"
-                defaultValue={session.user?.email}
-                onChange={handleInputChange}
-            />
-            <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-password">Senha</InputLabel>
-                <OutlinedInput
-                    id="outlined-adornment-password"
-                    type={showPassword ? 'text' : 'password'}
-                    defaultValue={session.user?.password}
-                    onChange={handleInputChange}
-                    endAdornment={
-                        <InputAdornment position="end">
-                            <IconButton
-                                aria-label="toggle password visibility"
-                                onClick={handleClickShowPassword}
-                                onMouseDown={handleMouseDownPassword}
-                                edge="end"
-                            >
-                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                            </IconButton>
-                        </InputAdornment>
-                    }
-                    label="Senha"
-                    name="password"
-                />
-            </FormControl>
-            <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-confirm-password">Confirmar Senha</InputLabel>
-                <OutlinedInput
-                    id="outlined-adornment-confirm-password"
-                    type={showConfirmPassword ? 'text' : 'password'}
-                    defaultValue={session}
-                    onChange={handleInputChange}
-                    error={passwordError}
-                    endAdornment={
-                        <InputAdornment position="end">
-                            <IconButton
-                                aria-label="toggle password visibility"
-                                onClick={handleClickShowConfirmPassword}
-                                onMouseDown={handleMouseDownPassword}
-                                edge="end"
-                            >
-                                {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                            </IconButton>
-                        </InputAdornment>
-                    }
-                    label="Confirmar Senha"
-                    name="confirmPassword"
-                />
-            </FormControl>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: '100px', width: '100%' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+                <p style={{ fontSize: '18px', fontWeight: "normal", color: '#1565c0' }}>EDITAR PERFIL</p>
+            </Box>
+            <Grid container spacing={2} sx={{ width: '100%' }}>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        fullWidth
+                        label="Nome"
+                        variant="outlined"
+                        name="name"
+                        value={userData.name}
+                        onChange={handleInputChange}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        fullWidth
+                        label="CPF"
+                        variant="outlined"
+                        name="cpf"
+                        value={userData.cpf}
+                        onChange={handleInputChange}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <FormControl fullWidth variant="outlined">
+                        <InputLabel htmlFor="outlined-adornment-password">Senha</InputLabel>
+                        <OutlinedInput
+                            id="outlined-adornment-password"
+                            type={showPassword ? 'text' : 'password'}
+                            value={userData.password}
+                            onChange={handleInputChange}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                            label="Senha"
+                            name="password"
+                        />
+                    </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <FormControl fullWidth variant="outlined">
+                        <InputLabel htmlFor="outlined-adornment-confirm-password">Confirmar Senha</InputLabel>
+                        <OutlinedInput
+                            id="outlined-adornment-confirm-password"
+                            type={showConfirmPassword ? 'text' : 'password'}
+                            value={userData.confirmPassword}
+                            onChange={handleInputChange}
+                            error={passwordError}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowConfirmPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
+                                    >
+                                        {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                            label="Confirmar Senha"
+                            name="confirmPassword"
+                        />
+                    </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        fullWidth
+                        label="Bairro"
+                        variant="outlined"
+                        name="neighborhood"
+                        value={userData.neighborhood}
+                        onChange={handleInputChange}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        fullWidth
+                        label="Rua"
+                        variant="outlined"
+                        name="street"
+                        value={userData.street}
+                        onChange={handleInputChange}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        fullWidth
+                        label="Número"
+                        variant="outlined"
+                        name="number"
+                        value={userData.number}
+                        onChange={handleInputChange}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        fullWidth
+                        label="Complemento"
+                        variant="outlined"
+                        name="complement"
+                        value={userData.complement}
+                        onChange={handleInputChange}
+                    />
+                </Grid>
+            </Grid>
             {passwordError && <p style={{ color: 'red' }}>As senhas não correspondem. Por favor, tente novamente.</p>}
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '10px' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginTop: '10px' }}>
                 <Checkbox
                     checked={termsChecked}
                     onChange={handleTermsChange}
@@ -155,12 +222,14 @@ const ProfilePage: React.FC = () => {
                 />
                 <p style={{ fontSize: '12px' }}>Aceito os termos e condições</p>
             </Box>
-            <Button variant="contained" color="primary" onClick={handleSaveForm} sx={{ marginTop: '10px' }}>
-                Salvar
-            </Button>
-            <Button variant="outlined" color="error" onClick={() => setDeleteDialogOpen(true)} sx={{ marginTop: '10px' }}>
-                Excluir Conta
-            </Button>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginTop: '10px', width: '100%' }}>
+                <Button variant="contained" color="primary" onClick={handleSaveForm} sx={{ marginRight: '10px' }}>
+                    Salvar
+                </Button>
+                <Button variant="outlined" color="error" onClick={() => setDeleteDialogOpen(true)}>
+                    Excluir Conta
+                </Button>
+            </Box>
 
             {/* Diálogo de confirmação para exclusão da conta */}
             <Dialog
