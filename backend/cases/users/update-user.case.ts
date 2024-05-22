@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { User } from "../../database/models/User.model";
 import { DefaultResponse, FailedResponse } from "../../types/definitions";
 import { Address } from "../../database/models/Address.model";
+import { Term } from "../../database/models/Term.model";
 
 export default async function updateUser(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
@@ -15,7 +16,7 @@ export default async function updateUser(req: Request, res: Response): Promise<R
     
     await User.update({ name, document }, { where: { id } })
 
-    const user = await User.findOne({ where: { id }, include: [ Address ] })
+    const user = await User.findOne({ where: { id }, include: [ Address, Term ] })
 
     if (!user) {
         return res.status(200).json({

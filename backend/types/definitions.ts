@@ -2,7 +2,7 @@
  * Requests/Responses definitions
  * --- --- --- --- --- --- --- --- --- ---
  */
-export type DefaultResponse<T extends any | Array<any> = []> = {
+export type DefaultResponse<T extends any | Array<any> = void> = {
     ok: true,
     status: string;
     message: string;

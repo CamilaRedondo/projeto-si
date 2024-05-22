@@ -7,13 +7,15 @@ import SessionContextProvider from './session/SessionContext.context';
 
 export default function App(){
   return (
-    <BrowserRouter>
-        <Routes>
-            <Route path="/" element={<LoginPage/>} />
-            <Route path="/signup" element={<SignUpPage/>} />
-            <Route path="/profile" element={<ProfilePage/>} />
-        </Routes>
-    </BrowserRouter>
+    <SessionContextProvider>
+      <BrowserRouter>
+          <Routes>
+              <Route path="/" element={<LoginPage/>} />
+              <Route path="/signup" element={<SignUpPage/>} />
+              <Route path="/profile" element={<ProfilePage/>} />
+          </Routes>
+      </BrowserRouter>
+    </SessionContextProvider>
   );
 }
 

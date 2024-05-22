@@ -2,9 +2,6 @@ import React, { useState, ChangeEvent } from "react";
 import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, Link, OutlinedInput, TextField } from "@mui/material";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useNavigate } from "react-router-dom";
-import useSession from "../session/useSession.hook";
-import { User } from "../types/definitions";
 
 export default function LoginPage() {
     const [cpf, setCPF] = useState("");

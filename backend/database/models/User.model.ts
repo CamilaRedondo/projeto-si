@@ -1,5 +1,6 @@
 import { Column, DataType, HasOne, Model, Table } from "sequelize-typescript";
 import { Address } from "./Address.model";
+import { Term } from "./Term.model";
 
 @Table({ timestamps: true })
 export class User extends Model {
@@ -14,4 +15,7 @@ export class User extends Model {
 
     @HasOne(() => Address)
     address!: Address;
+
+    @HasOne(() => Term)
+    term!: Term;
 }

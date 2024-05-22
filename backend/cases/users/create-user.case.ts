@@ -3,9 +3,10 @@ import { User } from "../../database/models/User.model";
 import bcrypt from "bcrypt";
 import { Address } from "../../database/models/Address.model";
 import { DefaultResponse, FailedResponse } from "../../types/definitions";
+import { Term } from "../../database/models/Term.model";
 
 export default async function createUser(req: Request, res: Response): Promise<Response> {
-    const { name, password, document, address }: User = req.body;
+    const { name, password, document, address, term }: User = req.body;
 
     const user: User | null = await User.findOne({ where: { document } });
 
@@ -20,7 +21,7 @@ export default async function createUser(req: Request, res: Response): Promise<R
     bcrypt.hash(password, saltRounds, async function (err: Error | undefined, encrypted: string) {
         if (err) return console.log(err);
 
-        await User.create({ name, password: encrypted, document, address }, { include: [ Address ] })
+        await User.create({ name, password: encrypted, document, address, term }, { include: [ Address, Term ] })
     });
     
     return res.status(201).json({

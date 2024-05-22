@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
-import { Address } from "../../database/models/Address.model";
-import { DefaultResponse, FailedResponse } from "../../types/definitions";
-import { User } from "../../database/models/User.model";
 import { Term } from "../../database/models/Term.model";
+import { DefaultResponse, FailedResponse } from "../../types/definitions";
+import { Address } from "../../database/models/Address.model";
+import { User } from "../../database/models/User.model";
 
-export default async function updateAddress(req: Request, res: Response): Promise<Response> {
+export default async function updateTerms(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
-    const { line_1, line_2, city, state, zip_code }: Partial<Address> = req.body;
+    const { options, version, term }: Partial<Term> = req.body;
 
     if (!req.body || !id) return res.status(404).json({
         ok: false,
@@ -14,22 +14,22 @@ export default async function updateAddress(req: Request, res: Response): Promis
         message: "Usuário não encontrado"
     } satisfies FailedResponse);
 
-    await Address.update({ line_1, line_2, city, state, zip_code }, { where: { userId: id } });
+    await Term.update({ version, options, term }, { where: { id } });
 
-    const user = await User.findOne({ where: { id }, include: [ Address, Term ] });
+    const user = await User.findOne({ where: { id }, include: [ Address ] });
 
     if (!user) {
         return res.status(200).json({
             ok: true,
             status: "200",
-            message: "Endereço atualizado com sucesso.",
+            message: "Termos atualizado com sucesso.",
         } satisfies DefaultResponse)
     }
 
     return res.status(200).json({
         ok: true,
         status: "200",
-        message: "Endereço atualizado com sucesso.",
+        message: "Termos atualizado com sucesso.",
         data: user
     } satisfies DefaultResponse<User>)
 }
